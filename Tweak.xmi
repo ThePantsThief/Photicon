@@ -1,5 +1,6 @@
 
 #import "Tweak.h"
+#import "PHPreferences.h"
 
 #import <substrate.h>
 
@@ -9,22 +10,7 @@
 
 #import "xctheos.h"
 
-#define PHPreferences [[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/io.c0ldra1n.photicon-prefs.plist"]
 
-#define PHEnabled [(_dictionaryContainsKey(PHPreferences, @"PHEnabled") ? PHPreferences[@"PHEnabled"] : @(YES)) boolValue]
-
-#define PHImageEffect (PHPreferences[@"PHImageEffect"] ?: @"none")
-
-#define PHBlurAmount [(PHPreferences[@"PHBlurAmount"] ?: @(70)) floatValue]
-
-#define ALBUM_PHPreferences ([[NSDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/io.c0ldra1n.photicon-prefs-extras.plist"]?:[[NSDictionary alloc] init])
-
-#define PHAlbumName (ALBUM_PHPreferences[@"PHAlbumName"] ?: @"Camera Roll")
-
-static BOOL _dictionaryContainsKey(NSDictionary *dict, NSString *key){
-    for (NSString *_key in dict.allKeys) {
-        if ([_key isEqualToString:key]) {
-            return true;
         }
     }
     return false;
@@ -219,8 +205,8 @@ END()
 
 HOOK(SBUIController)
 
--(BOOL)clickedMenuButton{
-    if(PHEnabled){
+- (BOOL)clickedMenuButton {
+    if (PHEnabled()) {
         reloadPhotosIcon();
     }
     return ORIG();
