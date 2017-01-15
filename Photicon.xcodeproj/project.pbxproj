@@ -13,6 +13,7 @@
 		53189A3A1E291E580078CAF8 /* PHPRootListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53189A371E291E580078CAF8 /* PHPRootListController.m */; };
 		53189A3D1E291F280078CAF8 /* CRPSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53189A3C1E291F280078CAF8 /* CRPSTableViewCell.m */; };
 		53189A401E292C700078CAF8 /* PHPAlbumPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53189A3F1E292C700078CAF8 /* PHPAlbumPickerViewController.m */; };
+		C37F03E01E2C1F5A003A9858 /* UIImage+PHExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C37F03DF1E2C1F5A003A9858 /* UIImage+PHExtensions.m */; };
 		C37F03E31E2C2080003A9858 /* PHPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = C37F03E21E2C2080003A9858 /* PHPreferences.m */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,8 @@
 		53189A3C1E291F280078CAF8 /* CRPSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CRPSTableViewCell.m; path = preferences/CRPSTableViewCell.m; sourceTree = "<group>"; };
 		53189A3E1E292C700078CAF8 /* PHPAlbumPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PHPAlbumPickerViewController.h; path = preferences/PHPAlbumPickerViewController.h; sourceTree = "<group>"; };
 		53189A3F1E292C700078CAF8 /* PHPAlbumPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PHPAlbumPickerViewController.m; path = preferences/PHPAlbumPickerViewController.m; sourceTree = "<group>"; };
+		C37F03DE1E2C1F5A003A9858 /* UIImage+PHExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+PHExtensions.h"; sourceTree = "<group>"; };
+		C37F03DF1E2C1F5A003A9858 /* UIImage+PHExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+PHExtensions.m"; sourceTree = "<group>"; };
 		C37F03E11E2C2080003A9858 /* PHPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHPreferences.h; sourceTree = "<group>"; };
 		C37F03E21E2C2080003A9858 /* PHPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHPreferences.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,6 +78,8 @@
 				53189A3F1E292C700078CAF8 /* PHPAlbumPickerViewController.m */,
 				53189A3B1E291F280078CAF8 /* CRPSTableViewCell.h */,
 				53189A3C1E291F280078CAF8 /* CRPSTableViewCell.m */,
+				C37F03DE1E2C1F5A003A9858 /* UIImage+PHExtensions.h */,
+				C37F03DF1E2C1F5A003A9858 /* UIImage+PHExtensions.m */,
 				C37F03E11E2C2080003A9858 /* PHPreferences.h */,
 				C37F03E21E2C2080003A9858 /* PHPreferences.m */,
 				53189A381E291E580078CAF8 /* Resources */,
@@ -166,6 +171,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C37F03E01E2C1F5A003A9858 /* UIImage+PHExtensions.m in Sources */,
 				53189A391E291E580078CAF8 /* Makefile in Sources */,
 				53189A311E28ECB00078CAF8 /* Makefile in Sources */,
 				53189A3A1E291E580078CAF8 /* PHPRootListController.m in Sources */,
