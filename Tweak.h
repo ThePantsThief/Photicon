@@ -18,26 +18,29 @@ typedef enum {
     SBIconViewLocationFolder    = 7
 } SBIconViewLocation;
 
+
 @interface SBLockScreenManager : NSObject
 
--(void)_finishUIUnlockFromSource:(int)arg1 withOptions:(id)arg2;
+- (void)_finishUIUnlockFromSource:(int)arg1 withOptions:(id)arg2;
 
 @end
+
 
 @interface SBIcon : NSObject
 
--(id)applicationBundleID;
+@property (nonatomic, readonly) NSString *applicationBundleID;
 
 @end
+
 
 @interface SBIconImageView : UIView
 
 @property (nonatomic,readonly) SBIcon *icon;
 
--(UIImage *)_currentOverlayImage;
+- (UIImage *)_currentOverlayImage;
 
--(void)iconImageDidUpdate:(id)arg1;
--(void)updateImageAnimated:(BOOL)arg1 ;
+- (void)iconImageDidUpdate:(id)arg1;
+- (void)updateImageAnimated:(BOOL)arg1 ;
 
 @end
 
@@ -50,16 +53,17 @@ typedef enum {
 
 @interface SBIconModel : NSObject
 
--(id)expectedIconForDisplayIdentifier:(id)arg1;
+- (id)expectedIconForDisplayIdentifier:(id)arg1;
 
 @end
 
 
 @interface SBIconViewMap : NSObject
 
--(id)mappedIconViewForIcon:(id)arg1;
+- (id)mappedIconViewForIcon:(id)arg1;
 
 @end
+
 
 @interface SBIconController : NSObject
 
@@ -67,12 +71,11 @@ typedef enum {
 
 +(id)sharedInstance;
 
--(id)model;
+- (id)model;
 
--(BOOL)relayout;
+- (BOOL)relayout;
 
 @end
 
 @interface SBUIController : NSObject
-
 @end

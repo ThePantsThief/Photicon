@@ -12,21 +12,22 @@
 #import "xctheos.h"
 
 
+static PLManagedAsset * firstNonHiddenPhotoInAssets(NSOrderedSet *assets) {
+    for (PLManagedAsset *asset_photo in assets.reverseObjectEnumerator.allObjects) {
+        if (asset_photo.isPhoto && !asset_photo.hidden) {
+            return asset_photo;
         }
     }
-    return false;
 }
 
-static UIImage* getRecentImage(){
-    
+static UIImage * getRecentImage() {
     PLPhotoLibrary *library = [PLPhotoLibrary sharedPhotoLibrary];
-    
     PLManagedAlbum *album;
     
     NSLog(@"[Photicon]: Searching for albums...");
     
-    for (PLManagedAlbum *album_filtering in [library albums]) {
-        if ([album_filtering.localizedTitle isEqualToString:PHAlbumName]) {
+    for (PLManagedAlbum *album_filtering in library.albums) {
+        if ([album_filtering.localizedTitle isEqualToString:PHAlbumName()]) {
             album = album_filtering;
             break;
         }
@@ -35,69 +36,38 @@ static UIImage* getRecentImage(){
     NSLog(@"[Photicon]: Album search result: %@", album);
     
     if (!album) {
-        album = [[library albums] firstObject];
+        album = library.albums.firstObject;
     }
     
-    NSOrderedSet *assets = [album assets];
-    
-    PLManagedAsset *photo;
-    
-    for (int i = 0; i < assets.count; i++) {
-        
-        PLManagedAsset *asset_photo = [assets objectAtIndex:((assets.count-1) - i)];
-        
-        if ([asset_photo isPhoto] && ![asset_photo hidden]) {
-            photo = asset_photo;
-            break;
-        }
-    }
+    PLManagedAsset *photo = firstNonHiddenPhotoInAssets(album.assets);
     
     if (!photo) {
-        album = [[library albums] firstObject];
-        assets = [album assets];
-        for (int i = 0; i < assets.count; i++) {
-            
-            PLManagedAsset *asset_photo = [assets objectAtIndex:((assets.count-1) - i)];
-            
-            if ([asset_photo isPhoto] && ![asset_photo hidden]) {
-                photo = asset_photo;
-                break;
-            }
-        }
+        album = library.albums.firstObject;
+        photo = firstNonHiddenPhotoInAssets(album.assets);
     }
     
-    NSLog(@"[Photicon]: Verify that image is here: %@", [photo mainFileURL]);
-    
-    UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[photo mainFileURL]]];
-    
-    return image;
-    
+    NSLog(@"[Photicon]: Verify that image is here: %@", photo.mainFileURL);
+    return [UIImage imageWithData:[NSData dataWithContentsOfURL:photo.mainFileURL]];
 }
 
-    }
-    
-}
-
-static void reloadPhotosIcon(){
-    
+static void reloadPhotosIcon() {
     NSLog(@"[Photicon]: Will reload icon...");
     
-    SBIcon *icon = [[[GET_CLASS(SBIconController) sharedInstance] model] expectedIconForDisplayIdentifier:@"com.apple.mobileslideshow"];
-    
-    SBIconView *iconView = [[[GET_CLASS(SBIconController) sharedInstance] homescreenIconViewMap] mappedIconViewForIcon:icon];
-    
+    SBIconController *controller = [GET_CLASS(SBIconController) sharedInstance];
+    SBIcon *icon = [controller.model expectedIconForDisplayIdentifier:@"com.apple.mobileslideshow"];
+    SBIconView *iconView = [controller.homescreenIconViewMap mappedIconViewForIcon:icon];
     SBIconImageView *imageView = MSHookIvar<SBIconImageView *>(iconView, "_iconImageView");
     
-    [imageView updateImageAnimated:true];
+    [imageView updateImageAnimated:YES];
 }
 
 GROUP(defaults)
 
 HOOK(SBLockScreenManager)
 
--(void)_finishUIUnlockFromSource:(int)arg1 withOptions:(id)arg2{
-    ORIG();
-    if(PHEnabled){
+- (void)_finishUIUnlockFromSource:(int)arg1 withOptions:(id)arg2 {
+    ORIG(arg1, arg2);
+    if (PHEnabled()) {
         reloadPhotosIcon();
     }
 }
@@ -146,7 +116,6 @@ END()
 END_GROUP()
 
 
-CTOR(){
-    
+CTOR() {
     INIT(defaults);
 }
