@@ -4,7 +4,7 @@ GO_EASY_ON_ME=1
 
 TWEAK_NAME = Photicon
 
-$(TWEAK_NAME)_FILES = Tweak.xmi
+$(TWEAK_NAME)_FILES = Tweak.xmi PHPreferences.m UIImage+PHExtensions.m
 $(TWEAK_NAME)_PRIVATE_FRAMEWORKS = PhotoLibraryServices
 $(TWEAK_NAME)_LDFLAGS += -F/opt/theos/sdks/iPhoneOS9.3.sdk/System/Library/PrivateFrameworks/
 
