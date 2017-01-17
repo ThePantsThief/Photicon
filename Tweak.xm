@@ -4,13 +4,9 @@
 #import "UIImage+PHExtensions.h"
 
 #import <substrate.h>
-
-#import <PhotoLibraryServices/Processed/PLPhotoLibrary.h>
-#import <PhotoLibraryServices/Processed/PLManagedAlbum.h>
-#import <PhotoLibraryServices/Processed/PLManagedAsset.h>
-
-#import "xctheos.h"
-
+#import "PLPhotoLibrary.h"
+#import "PLManagedAlbum.h"
+#import "PLManagedAsset.h"
 
 static PLManagedAsset * firstNonHiddenPhotoInAssets(NSOrderedSet *assets) {
     for (PLManagedAsset *asset_photo in assets.reverseObjectEnumerator.allObjects) {
@@ -18,6 +14,8 @@ static PLManagedAsset * firstNonHiddenPhotoInAssets(NSOrderedSet *assets) {
             return asset_photo;
         }
     }
+    
+    return nil;
 }
 
 static UIImage * getRecentImage() {
@@ -26,8 +24,9 @@ static UIImage * getRecentImage() {
     
     PHLog(@"[Photicon]: Searching for albums...");
     
+    NSString *albumName = PHAlbumName();
     for (PLManagedAlbum *album_filtering in library.albums) {
-        if ([album_filtering.localizedTitle isEqualToString:PHAlbumName()]) {
+        if ([album_filtering.localizedTitle isEqualToString:albumName]) {
             album = album_filtering;
             break;
         }
@@ -53,7 +52,7 @@ static UIImage * getRecentImage() {
 static void reloadPhotosIcon() {
     PHLog(@"[Photicon]: Will reload icon...");
     
-    SBIconController *controller = [GET_CLASS(SBIconController) sharedInstance];
+    SBIconController *controller = [%c(SBIconController) sharedInstance];
     SBIcon *icon = [controller.model expectedIconForDisplayIdentifier:@"com.apple.mobileslideshow"];
     SBIconView *iconView = [controller.homescreenIconViewMap mappedIconViewForIcon:icon];
     SBIconImageView *imageView = MSHookIvar<SBIconImageView *>(iconView, "_iconImageView");
@@ -61,33 +60,33 @@ static void reloadPhotosIcon() {
     [imageView updateImageAnimated:YES];
 }
 
-GROUP(defaults)
+%group defaults
 
-HOOK(SBLockScreenManager)
+%hook SBLockScreenManager
 
 - (void)_finishUIUnlockFromSource:(int)arg1 withOptions:(id)arg2 {
-    ORIG(arg1, arg2);
+    %orig(arg1, arg2);
     if (PHEnabled()) {
         reloadPhotosIcon();
     }
 }
 
 
-END()
+%end
 
 
-HOOK(SBUIController)
+%hook SBUIController
 
 - (BOOL)clickedMenuButton {
     if (PHEnabled()) {
         reloadPhotosIcon();
     }
-    return ORIG();
+    return %orig();
 }
 
-END()
+%end
 
-HOOK(SBIconImageView)
+%hook SBIconImageView
 
 - (id)contentsImage {
     if (PHEnabled() && [self.icon.applicationBundleID isEqualToString:@"com.apple.mobileslideshow"]) {
@@ -108,14 +107,14 @@ HOOK(SBIconImageView)
         return finalImage;
     }
     
-    return ORIG();
+    return %orig();
 }
 
-END()
+%end
 
-END_GROUP()
+%end
 
 
-CTOR() {
-    INIT(defaults);
+%ctor {
+    %init(defaults);
 }

@@ -6,9 +6,10 @@
 //  Copyright © 2017 c0ldra1n. All rights reserved.
 //
 
-#import <PhotoLibraryServices/Processed/PLPhotoLibrary.h>
-#import <PhotoLibraryServices/Processed/PLManagedAlbum.h>
-#import <PhotoLibraryServices/Processed/PLManagedAsset.h>
+#import "../PLPhotoLibrary.h"
+#import "../PLManagedAlbum.h"
+#import "../PLManagedAsset.h"
+#import "../PHPreferences.h"
 
 #import "PHPAlbumPickerViewController.h"
 

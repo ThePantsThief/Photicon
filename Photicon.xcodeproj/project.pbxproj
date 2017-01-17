@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		53189A311E28ECB00078CAF8 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 53189A2D1E28ECB00078CAF8 /* Makefile */; };
-		53189A321E28ECB50078CAF8 /* Tweak.xmi in Sources */ = {isa = PBXBuildFile; fileRef = 53189A2F1E28ECB00078CAF8 /* Tweak.xmi */; };
+		53189A321E28ECB50078CAF8 /* Tweak.xm in Sources */ = {isa = PBXBuildFile; fileRef = 53189A2F1E28ECB00078CAF8 /* Tweak.xm */; };
 		53189A391E291E580078CAF8 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 53189A351E291E580078CAF8 /* Makefile */; };
 		53189A3A1E291E580078CAF8 /* PHPRootListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53189A371E291E580078CAF8 /* PHPRootListController.m */; };
 		53189A3D1E291F280078CAF8 /* CRPSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 53189A3C1E291F280078CAF8 /* CRPSTableViewCell.m */; };
@@ -34,7 +34,7 @@
 		53189A2C1E28ECB00078CAF8 /* control */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = control; sourceTree = "<group>"; };
 		53189A2D1E28ECB00078CAF8 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		53189A2E1E28ECB00078CAF8 /* Tweak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweak.h; sourceTree = "<group>"; };
-		53189A2F1E28ECB00078CAF8 /* Tweak.xmi */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Tweak.xmi; sourceTree = "<group>"; };
+		53189A2F1E28ECB00078CAF8 /* Tweak.xm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Tweak.xm; sourceTree = "<group>"; };
 		53189A301E28ECB00078CAF8 /* xctheos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xctheos.h; sourceTree = "<group>"; };
 		53189A341E291E580078CAF8 /* entry.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = entry.plist; path = preferences/entry.plist; sourceTree = "<group>"; };
 		53189A351E291E580078CAF8 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = preferences/Makefile; sourceTree = "<group>"; };
@@ -68,7 +68,7 @@
 				53189A2C1E28ECB00078CAF8 /* control */,
 				53189A2D1E28ECB00078CAF8 /* Makefile */,
 				53189A2E1E28ECB00078CAF8 /* Tweak.h */,
-				53189A2F1E28ECB00078CAF8 /* Tweak.xmi */,
+				53189A2F1E28ECB00078CAF8 /* Tweak.xm */,
 				53189A301E28ECB00078CAF8 /* xctheos.h */,
 				53189A341E291E580078CAF8 /* entry.plist */,
 				53189A351E291E580078CAF8 /* Makefile */,
@@ -177,7 +177,7 @@
 				53189A3A1E291E580078CAF8 /* PHPRootListController.m in Sources */,
 				C37F03E31E2C2080003A9858 /* PHPreferences.m in Sources */,
 				53189A401E292C700078CAF8 /* PHPAlbumPickerViewController.m in Sources */,
-				53189A321E28ECB50078CAF8 /* Tweak.xmi in Sources */,
+				53189A321E28ECB50078CAF8 /* Tweak.xm in Sources */,
 				53189A3D1E291F280078CAF8 /* CRPSTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,7 +279,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEVELOPMENT_TEAM = L53UBUP7SC;
 				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = /opt/theos/include;
+				HEADER_SEARCH_PATHS = "/opt/theos/include/**";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -294,7 +294,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEVELOPMENT_TEAM = L53UBUP7SC;
 				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = /opt/theos/include;
+				HEADER_SEARCH_PATHS = "/opt/theos/include/**";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

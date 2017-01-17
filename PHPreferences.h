@@ -3,15 +3,23 @@
 //  Photicon
 //
 //  Created by Tanner on 1/15/17.
-//  Copyright © 2017 c0ldra1n. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-static NSDictionary * PHPreferences();
-static NSDictionary * ALBUM_PHPreferences();
-static BOOL PHEnabled();
-static double PHBlurAmount();
-static NSString * PHImageEffect();
-static NSString * PHAlbumName();
+extern NSDictionary * PHPreferences();
+extern NSDictionary * ALBUM_PHPreferences();
+extern BOOL PHEnabled();
+extern double PHBlurAmount();
+extern NSString * PHImageEffect();
+extern NSString * PHAlbumName();
+extern void PHSetPreferenceValueForKey(id value, NSString *key);
+extern void PHSetAlbumPreferenceValueForKey(id value, NSString *key);
+
+#ifdef __cplusplus
+}
+#endif
