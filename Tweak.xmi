@@ -24,7 +24,7 @@ static UIImage * getRecentImage() {
     PLPhotoLibrary *library = [PLPhotoLibrary sharedPhotoLibrary];
     PLManagedAlbum *album;
     
-    NSLog(@"[Photicon]: Searching for albums...");
+    PHLog(@"[Photicon]: Searching for albums...");
     
     for (PLManagedAlbum *album_filtering in library.albums) {
         if ([album_filtering.localizedTitle isEqualToString:PHAlbumName()]) {
@@ -33,7 +33,7 @@ static UIImage * getRecentImage() {
         }
     }
     
-    NSLog(@"[Photicon]: Album search result: %@", album);
+    PHLog(@"[Photicon]: Album search result: %@", album);
     
     if (!album) {
         album = library.albums.firstObject;
@@ -46,12 +46,12 @@ static UIImage * getRecentImage() {
         photo = firstNonHiddenPhotoInAssets(album.assets);
     }
     
-    NSLog(@"[Photicon]: Verify that image is here: %@", photo.mainFileURL);
+    PHLog(@"[Photicon]: Verify that image is here: %@", photo.mainFileURL);
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:photo.mainFileURL]];
 }
 
 static void reloadPhotosIcon() {
-    NSLog(@"[Photicon]: Will reload icon...");
+    PHLog(@"[Photicon]: Will reload icon...");
     
     SBIconController *controller = [GET_CLASS(SBIconController) sharedInstance];
     SBIcon *icon = [controller.model expectedIconForDisplayIdentifier:@"com.apple.mobileslideshow"];
@@ -94,10 +94,10 @@ HOOK(SBIconImageView)
         
         UIImage *overlayMask = [[self _currentOverlayImage] resizedToSize:CGSizeMake(256, 256)];
         UIImage *recentImage = getRecentImage();
-        UIImage *finalImage;
+        UIImage *finalImage  = recentImage;
         
         if ([PHImageEffect() isEqualToString:@"none"]) {
-            finalImage = [recentImage maskedToImage:overlayMask];
+            //            finalImage = [recentImage maskedToImage:overlayMask];
         } else if ([PHImageEffect() isEqualToString:@"lightblur"]) {
             finalImage = [[recentImage blurred:PHBlurAmount()] maskedToImage:overlayMask];
         } else if ([PHImageEffect() isEqualToString:@"darkblur"]) {

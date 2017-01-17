@@ -40,8 +40,8 @@
     CGContextClipToMask(mainViewContentContext, rect1, maskImageRef);
     CGContextDrawImage(mainViewContentContext, rect2, self.CGImage);
     
-    // Create CGImageRef of the main view bitmap content, and then
-    // release that bitmap context
+    // Create CGImageRef of the main view bitmap content,
+    // and then release that bitmap context
     CGImageRef newImage = CGBitmapContextCreateImage(mainViewContentContext);
     CGContextRelease(mainViewContentContext);
     
@@ -52,7 +52,7 @@
 }
 
 - (instancetype)resizedToSize:(CGSize)size {
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
+    UIGraphicsBeginImageContextWithOptions(size, YES, 0.0);
     [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -84,25 +84,20 @@
 }
 
 - (instancetype)blurred:(CGFloat)radius {
-    //  Create our blurred image
+    // Create our blurred image
     CIContext *context = [CIContext contextWithOptions:nil];
-    CIImage *inputImage = [CIImage imageWithCGImage:self.CGImage];
     
-    //  Setting up Gaussian Blur
+    // Setting up Gaussian Blur
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
-    
-    [filter setValue:inputImage forKey:kCIInputImageKey];
-    
-    [filter setValue:[NSNumber numberWithFloat:radius] forKey:@"inputRadius"];
-    
+    [filter setValue:self.CIImage forKey:kCIInputImageKey];
+    [filter setValue:@(radius) forKey:@"inputRadius"];
     CIImage *result = [filter valueForKey:kCIOutputImageKey];
     
     /*  CIGaussianBlur has a tendency to shrink the image a little, this ensures it matches
      *  up exactly to the bounds of our original image */
-    CGImageRef cgImage = [context createCGImage:result fromRect:[inputImage extent]];
+    CGImageRef cgImage = [context createCGImage:result fromRect:self.CIImage.extent];
     
-    UIImage *retVal = [UIImage imageWithCGImage:cgImage];
-    return retVal;
+    return [UIImage imageWithCGImage:cgImage];
 }
 
 @end

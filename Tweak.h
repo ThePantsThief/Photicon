@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#define DEBUG 1
+
+#if DEBUG
+#define PHLog(...) NSLog(__VA_ARGS__)
+#else
+#define PHLog(...)
+#endif
+
 typedef enum {
     SBIconViewLocationNormal    = 1,
     SBIconViewLocationStark     = 2,
