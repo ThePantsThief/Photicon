@@ -8,21 +8,19 @@
 
 @implementation PHPRootListController
 
--(void)twitter{
+- (void)twitter {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/0xc0ldra1n"]];
 }
 
--(void)selectAlbum{
-    
+- (void)selectAlbum {
     PHPAlbumPickerViewController *albumVC = [[PHPAlbumPickerViewController alloc] initWithStyle:UITableViewStylePlain];
-    
     UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:albumVC];
-    
     [self presentViewController:navigationVC animated:YES completion:nil];
     
 }
 
--(void)respring{
+- (void)respring {
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     system("killall -9 SpringBoard");
 }
 

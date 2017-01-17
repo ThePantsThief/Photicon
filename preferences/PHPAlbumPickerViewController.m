@@ -13,16 +13,9 @@
 
 #import "PHPAlbumPickerViewController.h"
 
-#define ALBUM_PHPreferences ([[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/io.c0ldra1n.photicon-prefs-extras.plist"]?:[[NSMutableDictionary alloc] init])
-
-#define PHAlbumName (ALBUM_PHPreferences[@"PHAlbumName"] ?: @"Camera Roll")
-
-@interface PHPAlbumPickerViewController () {
-    NSUInteger selectedIndex;
-}
-
-@property (strong) NSArray *albums;
-
+@interface PHPAlbumPickerViewController ()
+@property (nonatomic) NSArray<PLManagedAlbum*> *albums;
+@property (nonatomic) NSIndexPath *selectedIndex;
 @end
 
 @implementation PHPAlbumPickerViewController
@@ -30,22 +23,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSMutableArray *albums_unfiltered = [[[PLPhotoLibrary sharedPhotoLibrary] albums] mutableCopy];
+    self.tableView.rowHeight = 44.f;
     
+    NSMutableArray *albums_unfiltered = [[PLPhotoLibrary sharedPhotoLibrary] albums].mutableCopy;
     [albums_unfiltered removeObjectAtIndex:0];  //  Camera Roll Duplicate Fix
     
-    NSMutableArray *filteredAlbums = [[NSMutableArray alloc] init];
-    
+    // Remove empty and hidden albums
+    NSInteger i = 0;
+    NSString *currentAlbumName = PHAlbumName();
+    NSMutableArray *filteredAlbums = [NSMutableArray array];
     for (PLManagedAlbum *album in albums_unfiltered) {
-        if (([album photosCount] != 0) && ![album.localizedTitle isEqualToString:@"Hidden"]) {
+        if (album.photosCount && ![album.localizedTitle isEqualToString:@"Hidden"]) {
             [filteredAlbums addObject:album];
+            
+            // Set self.selectedIndex
+            if ([album.localizedTitle isEqualToString:currentAlbumName]) {
+                self.selectedIndex = [NSIndexPath indexPathForRow:i inSection:0];
+            }
+            i++;
         }
     }
     
     self.albums = filteredAlbums;
 
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-    
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done)];
     
     self.navigationItem.leftBarButtonItem = cancelButton;
@@ -53,12 +54,6 @@
     self.navigationItem.title = @"Select Album";
     
     [self.tableView reloadData];    //   When everything is done
-    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -71,9 +66,7 @@
     return self.albums.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     
     if (!cell) {
@@ -82,61 +75,33 @@
     
     PLManagedAlbum *album = self.albums[indexPath.row];
     
-    cell.textLabel.text = [album localizedTitle];
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%llu Photos", [album photosCount]];
-    
+    cell.textLabel.text = album.localizedTitle;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%llu Photos", album.photosCount];
     cell.detailTextLabel.textColor = [UIColor grayColor];
     
-    if ([[album localizedTitle] isEqualToString:PHAlbumName]) {
-        
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        
-        selectedIndex = indexPath.row;
-        
-    }else{
-        
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        
+    // self.selectedIndex is initialized in viewDidLoad
+    if ([self.selectedIndex isEqual:indexPath]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    
-    // Configure the cell...
     
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0]] setAccessoryType:UITableViewCellAccessoryNone];
-    
-    [[self.tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryCheckmark];
-    
-    selectedIndex = indexPath.row;
-    
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [[tableView cellForRowAtIndexPath:self.selectedIndex] setAccessoryType:UITableViewCellAccessoryNone];
+    [[tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryCheckmark];
+    self.selectedIndex = indexPath;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 100.0f;
-}
-
--(void)done{
-    
-    PLManagedAlbum *album = self.albums[selectedIndex];
-    
-    NSString *name = [album localizedTitle];
-    
-    NSMutableDictionary *mutablePrefs = ALBUM_PHPreferences;
-    
-    [mutablePrefs setValue:name forKey:@"PHAlbumName"];
-    
-    [mutablePrefs writeToFile:@"/var/mobile/Library/Preferences/io.c0ldra1n.photicon-prefs-extras.plist" atomically:YES];
-    
+- (void)done {
+    PHSetAlbumPreferenceValueForKey(self.albums[self.selectedIndex.row].localizedTitle, @"PHAlbumName");
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)cancel{
+- (void)cancel {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
