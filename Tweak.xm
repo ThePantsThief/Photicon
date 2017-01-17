@@ -96,7 +96,7 @@ static void reloadPhotosIcon() {
         UIImage *finalImage  = recentImage;
         
         if ([PHImageEffect() isEqualToString:@"none"]) {
-            //            finalImage = [recentImage maskedToImage:overlayMask];
+            finalImage = [recentImage maskedToImage:overlayMask];
         } else if ([PHImageEffect() isEqualToString:@"lightblur"]) {
             finalImage = [[recentImage blurred:PHBlurAmount()] maskedToImage:overlayMask];
         } else if ([PHImageEffect() isEqualToString:@"darkblur"]) {
